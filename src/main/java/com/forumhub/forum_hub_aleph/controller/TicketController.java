@@ -1,16 +1,16 @@
 package com.forumhub.forum_hub_aleph.controller;
 
+import com.forumhub.forum_hub_aleph.repository.TicketRepository;
 import com.forumhub.forum_hub_aleph.solicitacoes.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/topicos")
@@ -21,13 +21,21 @@ public class TicketController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrarTicket(@RequestBody @Valid DadosTicket dados){
+    public ResponseEntity cadastrarTicket(@RequestBody @Valid DadosTicket dados) {
+        if (repository.existsByTitulo(dados.titulo())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Já existe um ticket com o título: " + dados.titulo());
+        } if (repository.existsByMensagem(dados.mensagem())){
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Já existe um ticket com essa mensagem: " + dados.mensagem());
+        }
         repository.save(new Ticket(dados));
         return ResponseEntity.noContent().build();
     }
 
+
     @GetMapping
-    public ResponseEntity<Page<ListarDadosTicket>> listarTickets (@PageableDefault(size = 10, page = 0, sort = {"dataDeCriacao"})Pageable pagina) {
+    public ResponseEntity<Page<ListarDadosTicket>> listarTickets(@PageableDefault(size = 10, page = 0, sort = {"dataDeCriacao"}) Pageable pagina) {
         var paginas = repository.findByStatusTopicoTrue(pagina).map(ListarDadosTicket::new);
 
         return ResponseEntity.ok(paginas);
@@ -42,13 +50,23 @@ public class TicketController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<Ticket> atualizarTicket(@PathVariable Long id, @RequestBody @Valid AtualizarDadosTicket atualizarDados){
+    public ResponseEntity<Ticket> atualizarTicket(@PathVariable Long id, @RequestBody @Valid AtualizarDadosTicket atualizarDados) {
         var dadosTicket = repository.getReferenceById(id);
         dadosTicket.atualizarTicket(atualizarDados);
 
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{id}/respostas")
+    @Transactional
+    public ResponseEntity<Ticket> respostaTicket(@PathVariable Long id, @RequestBody @Valid RespostaTicket respostaTicket) {
+        var resposta = repository.getReferenceById(id);
+
+        resposta.atualizarTicket(respostaTicket);
+        return ResponseEntity.ok().build();
+    }
+
+    // Exclusão completa
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> deletarTicket(@PathVariable Long id){
@@ -60,5 +78,15 @@ public class TicketController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    //Exclusão lógica
+    @DeleteMapping("/{id}/exclusaologica")
+    @Transactional
+    public ResponseEntity deleteLogicoTicket(@PathVariable Long id) {
+        var deleteTicket = repository.getReferenceById(id);
+        deleteTicket.deletar();
+
+        return ResponseEntity.noContent().build();
     }
 }

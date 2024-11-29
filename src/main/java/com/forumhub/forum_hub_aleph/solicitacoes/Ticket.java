@@ -1,6 +1,7 @@
 package com.forumhub.forum_hub_aleph.solicitacoes;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Ticket {
     private boolean statusTopico;
     private String autor;
     private String curso;
+    private String resposta;
 
     public Ticket(DadosTicket dados) {
         this.titulo = dados.titulo();
@@ -50,4 +52,25 @@ public class Ticket {
         }
     }
 
+    public void atualizarTicket(@Valid RespostaTicket respostaTicket) {
+        if (respostaTicket.titulo() != null){
+            this.titulo = respostaTicket.titulo();
+        }
+        if (respostaTicket.mensagem() != null) {
+            this.mensagem = respostaTicket.mensagem();
+        }
+        if (respostaTicket.autor() != null){
+            this.autor = respostaTicket.autor();
+        }
+        if (respostaTicket.curso() != null){
+            this.curso = respostaTicket.curso();
+        }
+        if (respostaTicket.resposta() != null){
+            this.resposta = respostaTicket.resposta();
+        }
+    }
+
+    public void deletar(){
+        this.statusTopico = false;
+    }
 }
