@@ -1,0 +1,1 @@
+ALTER TABLE tickets CHANGE statusTopico status_topico BOOLEAN NOT NULL;
