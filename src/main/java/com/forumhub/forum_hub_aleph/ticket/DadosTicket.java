@@ -1,4 +1,4 @@
-package com.forumhub.forum_hub_aleph.solicitacoes;
+package com.forumhub.forum_hub_aleph.ticket;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +10,6 @@ public record DadosTicket(
         String mensagem,
         @NotBlank
         String autor,
-        @NotBlank
-        String curso) {
+        @NotNull
+        CursosTicket curso) {
 }

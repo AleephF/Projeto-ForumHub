@@ -1,20 +1,17 @@
-package com.forumhub.forum_hub_aleph.solicitacoes;
+package com.forumhub.forum_hub_aleph.ticket;
 
 import jakarta.validation.constraints.NotBlank;
-
-import java.time.LocalDate;
+import jakarta.validation.constraints.NotNull;
 
 public record RespostaTicket(
         @NotBlank
         String titulo,
         @NotBlank
         String mensagem,
-        LocalDate dataDeCriacao,
-        boolean statusTopico,
         @NotBlank
         String autor,
-        @NotBlank
-        String curso,
+        @NotNull
+        CursosTicket curso,
         @NotBlank
         String resposta) {
 }

@@ -1,4 +1,4 @@
-package com.forumhub.forum_hub_aleph.solicitacoes;
+package com.forumhub.forum_hub_aleph.ticket;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
@@ -26,7 +25,8 @@ public class Ticket {
     private LocalDate dataDeCriacao;
     private boolean statusTopico;
     private String autor;
-    private String curso;
+    @Enumerated(EnumType.STRING)
+    private CursosTicket curso;
     private String resposta;
 
     public Ticket(DadosTicket dados) {

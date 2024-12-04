@@ -1,4 +1,4 @@
-package com.forumhub.forum_hub_aleph.solicitacoes;
+package com.forumhub.forum_hub_aleph.ticket;
 
 import java.time.LocalDate;
 
@@ -8,7 +8,7 @@ public record ListarDadosTicket(
         LocalDate dataDeCriacao,
         Boolean statusTopico,
         String autor,
-        String curso,
+        CursosTicket curso,
         String resposta) {
 
     public ListarDadosTicket(Ticket tickets) {

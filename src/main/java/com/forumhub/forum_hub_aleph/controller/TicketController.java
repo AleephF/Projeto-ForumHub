@@ -1,19 +1,24 @@
 package com.forumhub.forum_hub_aleph.controller;
 
 import com.forumhub.forum_hub_aleph.repository.TicketRepository;
-import com.forumhub.forum_hub_aleph.solicitacoes.*;
+import com.forumhub.forum_hub_aleph.ticket.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
 
 @RestController
 @RequestMapping("/topicos")
+@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class TicketController {
 
     @Autowired
@@ -21,7 +26,7 @@ public class TicketController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrarTicket(@RequestBody @Valid DadosTicket dados) {
+    public ResponseEntity cadastrarTicket(@RequestBody @Valid DadosTicket dados, UriComponentsBuilder uriComponentsBuilder) {
         if (repository.existsByTitulo(dados.titulo())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("Já existe um ticket com o título: " + dados.titulo());
@@ -29,8 +34,11 @@ public class TicketController {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("Já existe um ticket com essa mensagem: " + dados.mensagem());
         }
-        repository.save(new Ticket(dados));
-        return ResponseEntity.noContent().build();
+        var ticket = new Ticket(dados);
+        repository.save(ticket);
+
+        var uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(ticket.getId()).toUri();
+        return ResponseEntity.created(uri).body(new ListarDadosTicket(ticket));
     }
 
 
@@ -50,20 +58,20 @@ public class TicketController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<Ticket> atualizarTicket(@PathVariable Long id, @RequestBody @Valid AtualizarDadosTicket atualizarDados) {
+    public ResponseEntity atualizarTicket(@PathVariable Long id, @RequestBody @Valid AtualizarDadosTicket atualizarDados) {
         var dadosTicket = repository.getReferenceById(id);
         dadosTicket.atualizarTicket(atualizarDados);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new ListarDadosTicket(dadosTicket));
     }
 
     @PutMapping("/{id}/respostas")
     @Transactional
-    public ResponseEntity<Ticket> respostaTicket(@PathVariable Long id, @RequestBody @Valid RespostaTicket respostaTicket) {
+    public ResponseEntity respostaTicket(@PathVariable Long id, @RequestBody @Valid RespostaTicket respostaTicket) {
         var resposta = repository.getReferenceById(id);
 
         resposta.atualizarTicket(respostaTicket);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new ListarDadosTicket(resposta));
     }
 
     // Exclusão completa
