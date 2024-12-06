@@ -27,6 +27,7 @@ public class SecurityConfigurations {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
+                    req.requestMatchers("/login/cadastrar").permitAll();
                     req.requestMatchers("/login").permitAll();
                     req.requestMatchers(HttpMethod.GET,"/topicos").permitAll();
                     req.requestMatchers(HttpMethod.GET,"/topicos/{id}").permitAll();
