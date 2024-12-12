@@ -31,6 +31,7 @@ public class SecurityConfigurations {
                     req.requestMatchers("/login").permitAll();
                     req.requestMatchers(HttpMethod.GET,"/topicos").permitAll();
                     req.requestMatchers(HttpMethod.GET,"/topicos/{id}").permitAll();
+                    req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
                     req.anyRequest().authenticated();
                 });
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);

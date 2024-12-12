@@ -3,6 +3,7 @@ package com.forumhub.forum_hub_aleph.controller;
 import com.forumhub.forum_hub_aleph.repository.TicketRepository;
 import com.forumhub.forum_hub_aleph.service.TicketService;
 import com.forumhub.forum_hub_aleph.ticket.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class TicketController {
     private TicketService ticketService;
 
     @PostMapping
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity cadastrarTicket(@RequestBody @Valid DadosTicket dados, UriComponentsBuilder uriComponentsBuilder) {
         ticketService.cadastrarTicket(dados);
         var ticket = new Ticket(dados);
@@ -53,6 +55,7 @@ public class TicketController {
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<ListarDadosTicket> atualizarTicket(@PathVariable Long id, @RequestBody @Valid AtualizarDadosTicket atualizarDados) {
         var dadosAtualizados = ticketService.atualizarTicket(id, atualizarDados);
 
@@ -60,6 +63,7 @@ public class TicketController {
     }
 
     @PutMapping("/{id}/respostas")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<ListarDadosTicket> respostaTicket(@PathVariable Long id, @RequestBody @Valid RespostaTicket respostaTicket) {
         var ticketAtualizado = ticketService.respostaTicket(id, respostaTicket);
 
@@ -68,6 +72,7 @@ public class TicketController {
 
     // Exclusão completa
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> deletarTicket(@PathVariable Long id){
         ticketService.delete(id);
         return ResponseEntity.noContent().build();
@@ -75,6 +80,7 @@ public class TicketController {
 
     //Exclusão lógica
     @DeleteMapping("/{id}/exclusaologica")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity deleteLogicoTicket(@PathVariable Long id) {
         ticketService.deleteLogico(id);
 
