@@ -14,11 +14,12 @@
 > + Cadastrar novos tickets.
 > + Atualizar informações de um ticket ativo.
 > + Responder tickets ativos.
-> + Visualizar tickets marcados como ativos.
+> #### O usuário não autenticado pode:
+> + Visualizar tickets marcados como ativos (conforme regra de negócio demonstrada no vídeo do desafio).
 
 > ## Metódos criados na classe AutenticacaoController:
 
-> + 1- Cadastrar Usuário (Utilizando login e senha)
+> + 1- Cadastrar Usuário (utilizando login e senha)
 > + 2- Efetuar login (Usuário já cadastrado no banco de dados)
 
 > ## Metódos criados na classe TicketController:
@@ -29,7 +30,7 @@
 > + 4- Atualizar as informações de um ticket ativo
 > + 5- Responder um ticket ativo
 > + 6- Deletar um ticket do banco de dados
-> + 7- Deletar de forma lógica (atualizando o status de "Ativo" para "Desativado") um ticket no banco de dados
+> + 7- Deletar de forma lógica (atualizando o status de "Ativo" para "Inativo") um ticket no banco de dados
 
 > ## SpringDoc:
 
@@ -61,4 +62,42 @@
 
 > ## Imagem das funcionalidades do projeto:
 
-> ![Tela do projeto](src/main/java/br/com/alura/projetoliteralura/assets/Imagem-do-projeto-LiterAlura.PNG)
+> #### Cadastrar login:
+
+> ![Tela do projeto](src/main/java/com/forumhub/forum_hub_aleph/imagens/Cadastrar-login.PNG)
+
+> #### Acessando:
+
+> ![Tela do projeto](src/main/java/com/forumhub/forum_hub_aleph/imagens/Login.PNG)
+
+> #### Erro de acesso (403 Forbidden), pois não foi colocado o Token no Bearer token:
+
+> ![Tela do projeto](src/main/java/com/forumhub/forum_hub_aleph/imagens/Erro-de-acesso.PNG)
+
+> #### Cadastrar ticket:
+
+> ![Tela do projeto](src/main/java/com/forumhub/forum_hub_aleph/imagens/Cadastrar-ticket.PNG)
+
+> #### Listagem de todos os tickets ativo:
+
+> ![Tela do projeto](src/main/java/com/forumhub/forum_hub_aleph/imagens/Listagem-dos-tickets-ativos.PNG)
+
+> #### Listagem dos tickets por tópico:
+
+> ![Tela do projeto](src/main/java/com/forumhub/forum_hub_aleph/imagens/Listagem-dos-tickets-ativos-por-topico.PNG)
+
+> #### Atualizando as informações de um ticket ativo:
+
+> ![Tela do projeto](src/main/java/com/forumhub/forum_hub_aleph/imagens/Atualizando-ticket.PNG)
+
+> #### Respondendo um ticket:
+
+> ![Tela do projeto](src/main/java/com/forumhub/forum_hub_aleph/imagens/Respondendo-ticket.PNG)
+
+> #### Delete lógico de um ticket (atualizando o status de "Ativo" para "Inativo"):
+
+> ![Tela do projeto](src/main/java/com/forumhub/forum_hub_aleph/imagens/Delete-logico.PNG)
+
+> #### Delete completo (apagando do banco de dados):
+
+> ![Tela do projeto](src/main/java/com/forumhub/forum_hub_aleph/imagens/Delete.PNG)   
